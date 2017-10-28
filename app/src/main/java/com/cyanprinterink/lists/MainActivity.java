@@ -1,29 +1,28 @@
 package com.cyanprinterink.lists;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
 {
     public static Context context;
+
+    public static Entry[] entries;
 
     @Override protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,18 +36,19 @@ public class MainActivity extends AppCompatActivity
         {
             @Override public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, Main2Activity.class));
+                startActivity(new Intent(MainActivity.this, AddEntry.class));
                 finish();
             }
         });
 
-        Button[] entries = null;
+        Button[] buttons = null;
         LinearLayout layout = (LinearLayout) findViewById(R.id.set);
         ScrollView sv = (ScrollView) findViewById(R.id.scrollboi);
 
         try
         {
             entries = getEntries();
+            Arrays.sort(entries);
         }
         catch(FileNotFoundException e)
         {
@@ -62,9 +62,12 @@ public class MainActivity extends AppCompatActivity
         if(entries != null)
             for(int i = 0; i < entries.length; i++)
             {
-                layout.addView(entries[i]);
+                Button button = new Button(this);
+                button.setText(entries[i].toString());
+                button.setLayoutParams(new LinearLayoutCompat.LayoutParams(context.getResources().getDisplayMetrics().widthPixels, 200));
+                layout.addView(button);
                 final int line = i;
-                entries[i].setOnClickListener(new View.OnClickListener()
+                button.setOnClickListener(new View.OnClickListener()
                 {
                     @Override public void onClick(View view)
                     {
@@ -76,31 +79,27 @@ public class MainActivity extends AppCompatActivity
             }
     }
 
-    @Override protected void onResume()
-    {
-        super.onResume();
-    }
-
-    private Button[] getEntries() throws FileNotFoundException, IOException
+    private Entry[] getEntries() throws IOException
     {
         File file = new File(this.getFilesDir(), "info.tsv");
-        Button[] ret = null;
+        Entry[] ret = null;
         if(!file.createNewFile())
         {
             Scanner sc = new Scanner(file);
+            sc.useDelimiter("\t|\n");
             Log.d("fileText", "starting read");
             //while(sc.hasNextLine())Log.d("fileText", sc.nextLine());
             LineNumberReader lnr = new LineNumberReader(new FileReader(file));
             lnr.skip(Long.MAX_VALUE);
-            ret = new Button[lnr.getLineNumber()];
+            ret = new Entry[lnr.getLineNumber()];
             for(int i = 0; i < ret.length; i++)
             {
-                ret[i] = new Button(this);
-                ret[i].setText(sc.nextLine());
-                ret[i].setLayoutParams(new LinearLayoutCompat.LayoutParams(context.getResources().getDisplayMetrics().widthPixels, 200));
+                int number = sc.nextInt();
+                ret[i] = new Entry(number);
             }
             sc.close();
             lnr.close();
+            Log.d("fileText", "finish read");
         }
         return ret;
     }

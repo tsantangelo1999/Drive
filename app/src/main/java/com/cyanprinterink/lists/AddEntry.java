@@ -9,7 +9,7 @@ import android.view.View;
 
 import java.io.*;
 
-public class Main2Activity extends AppCompatActivity
+public class AddEntry extends AppCompatActivity
 {
 
     @Override public void onBackPressed()
@@ -25,7 +25,7 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
     }
 
-    public void writeText(View view) throws FileNotFoundException, IOException
+    public void writeText(View view) throws IOException
     {
         Log.d("fileText", "printing");
         File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
