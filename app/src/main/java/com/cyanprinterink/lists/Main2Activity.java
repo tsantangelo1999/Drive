@@ -38,4 +38,11 @@ public class Main2Activity extends AppCompatActivity
         startActivity(refresh);
         finish();
     }
+
+    public void delete(View view)
+    {
+        Log.d("fileText", "deleting");
+        File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
+        file.delete();
+    }
 }

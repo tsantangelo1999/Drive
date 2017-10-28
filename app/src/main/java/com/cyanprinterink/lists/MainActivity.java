@@ -63,8 +63,17 @@ public class MainActivity extends AppCompatActivity
             for(int i = 0; i < entries.length; i++)
             {
                 layout.addView(entries[i]);
+                final int line = i;
+                entries[i].setOnClickListener(new View.OnClickListener()
+                {
+                    @Override public void onClick(View view)
+                    {
+                        startActivity(new Intent(MainActivity.this, Information.class));
+                        Information.line = line;
+                        finish();
+                    }
+                });
             }
-
     }
 
     @Override protected void onResume()
