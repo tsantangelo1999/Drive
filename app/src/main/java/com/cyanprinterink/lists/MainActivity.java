@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Home");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -49,14 +50,19 @@ public class MainActivity extends AppCompatActivity
         {
             entries = getEntries();
             Arrays.sort(entries);
+            sortEntries();
         }
         catch(FileNotFoundException e)
         {
-            Log.d("FixError", "File not found");
+            Log.d("fileText", "File not found");
         }
         catch(IOException e)
         {
-            Log.d("FixError", "IOException");
+            Log.d("fileText", "IOException");
+        }
+        catch(NullPointerException e)
+        {
+            Log.d("fileText", "no file");
         }
 
         if(entries != null)
@@ -102,5 +108,18 @@ public class MainActivity extends AppCompatActivity
             Log.d("fileText", "finish read");
         }
         return ret;
+    }
+
+    private void sortEntries() throws IOException
+    {
+        File file = new File(this.getFilesDir(), "info.tsv");
+        FileWriter fw = new FileWriter(file);
+        PrintWriter pw = new PrintWriter(fw);
+        for(Entry e : entries)
+        {
+            pw.println(e.number);
+        }
+        pw.close();
+        fw.close();
     }
 }
