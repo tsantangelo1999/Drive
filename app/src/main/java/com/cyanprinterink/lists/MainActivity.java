@@ -1,13 +1,18 @@
 package com.cyanprinterink.lists;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -83,6 +88,51 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
             }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case R.id.action_delete_all:
+                Log.d("fileText", "delete all");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(true);
+                builder.setTitle("Delete All");
+                builder.setMessage("Are you sure you want to delete all entries?");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        Log.d("fileText", "deleting");
+                        File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
+                        file.delete();
+                        finish();
+                        recreate();
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                    }
+                });
+                builder.show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private Entry[] getEntries() throws IOException

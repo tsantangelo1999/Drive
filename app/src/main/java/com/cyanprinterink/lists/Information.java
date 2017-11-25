@@ -54,20 +54,10 @@ public class Information extends AppCompatActivity
 
             case R.id.action_delete:
                 Log.d("fileText", "delete");
-                /*new AlertDialog.Builder(this)
-                        .setTitle("Title")
-                        .setMessage("Do you really want to whatever?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }})
-                        .setNegativeButton(android.R.string.no, null).show();*/
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(true);
-                builder.setTitle("Title");
-                builder.setMessage("Message");
+                builder.setTitle("Delete");
+                builder.setMessage("Are you sure you want to delete this entry?");
                 builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()
                 {
                     @Override

@@ -1,11 +1,16 @@
 package com.cyanprinterink.lists;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
+import java.util.Calendar;
 
 import java.io.*;
 
@@ -26,6 +31,12 @@ public class AddEntry extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add Entry");
+        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+        DatePicker dp = new DatePicker(this);
+        Calendar cal = Calendar.getInstance();
+        dp.init(cal.YEAR, cal.MONTH, cal.DAY_OF_MONTH, null);
+        dp.setLayoutParams(new LinearLayoutCompat.LayoutParams(MainActivity.context.getResources().getDisplayMetrics().widthPixels, 200));
+        constraintLayout.addView(dp);
     }
 
     public void writeText(View view) throws IOException
