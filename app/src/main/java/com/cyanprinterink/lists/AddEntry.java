@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+
 import java.util.Calendar;
 
 import java.io.*;
@@ -32,11 +34,32 @@ public class AddEntry extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add Entry");
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
-        DatePicker dp = new DatePicker(this);
-        Calendar cal = Calendar.getInstance();
-        dp.init(cal.YEAR, cal.MONTH, cal.DAY_OF_MONTH, null);
-        dp.setLayoutParams(new LinearLayoutCompat.LayoutParams(MainActivity.context.getResources().getDisplayMetrics().widthPixels, 200));
-        constraintLayout.addView(dp);
+
+        //date picker
+        final EditText date = (EditText) new EditText(this);
+        final Calendar cal = Calendar.getInstance();
+        final int cYear = cal.get(Calendar.YEAR);
+        final int cMonth = cal.get(Calendar.MONTH);
+        final int cDay = cal.get(Calendar.DAY_OF_MONTH);
+        date.setText((cMonth + 1) + " / " + cDay + " / " + cYear);
+        date.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                DatePickerDialog dpg = new DatePickerDialog(AddEntry.this, new DatePickerDialog.OnDateSetListener()
+                {
+                    @Override public void onDateSet(DatePicker view, int year,
+                            int month, int dayOfMonth)
+                    {
+                        date.setText((month + 1) + " / " + dayOfMonth + " / " + year);
+                    }
+                }, cYear, cMonth, cDay);
+                dpg.show();
+            }
+        });
+
+        constraintLayout.addView(date);
     }
 
     public void writeText(View view) throws IOException
