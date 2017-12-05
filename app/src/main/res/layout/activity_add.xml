@@ -31,6 +31,208 @@
             android:id="@+id/constraintLayout">
 
 
+        <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="0dp"
+                android:id="@+id/scrollboi"
+                tools:layout_constraintTop_creator="1"
+                tools:layout_constraintRight_creator="1"
+                tools:layout_constraintBottom_creator="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/constrainterLayout"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+
+                <Button
+                        android:text="Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/date"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/dateText" />
+
+                <TextView
+                        android:text="Date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/dateText"
+                        android:textSize="18sp"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="40dp"
+                        android:textColor="#000000" />
+
+                <TextView
+                        android:text="Time Driven"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeDrivenText"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="32dp"
+                        app:layout_constraintTop_toBottomOf="@+id/date"
+                        android:textSize="18sp"
+                        android:textColor="#000000" />
+
+                <EditText
+                        android:layout_width="36dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/timeDrivenHr"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/timeDrivenText"
+                        android:textAlignment="center"
+                        android:maxLength="2"
+                        android:nextFocusDown="@+id/timeDrivenMin" />
+
+                <EditText
+                        android:layout_width="36dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/timeDrivenMin"
+                        app:layout_constraintLeft_toRightOf="@+id/timeHrs"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/timeDrivenText"
+                        android:textAlignment="center"
+                        android:maxLength="2" />
+
+                <TextView
+                        android:text="Hours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeHrs"
+                        app:layout_constraintLeft_toRightOf="@+id/timeDrivenHr"
+                        android:layout_marginLeft="12dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/timeDrivenHr"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="#000000" />
+
+                <TextView
+                        android:text="Minutes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeMins"
+                        app:layout_constraintLeft_toRightOf="@+id/timeDrivenMin"
+                        android:layout_marginLeft="12dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/timeDrivenMin"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="#000000" />
+
+                <TextView
+                        android:text="Light Condition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/daylightText"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="32dp"
+                        app:layout_constraintTop_toBottomOf="@+id/timeDrivenHr"
+                        android:textSize="18sp"
+                        android:textColor="#000000" />
+
+                <CheckBox
+                        android:text="Day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lightCondDay"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/daylightText"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <CheckBox
+                        android:text="Night"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lightCondNight"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/daylightText"
+                        android:layout_marginLeft="160dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                        android:text="Weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weatherText"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:layout_marginTop="32dp"
+                        app:layout_constraintTop_toBottomOf="@+id/lightCondDay"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <CheckBox
+                        android:text="Clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weatherClear"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/weatherText"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <CheckBox
+                        android:text="Rain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weatherRain"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/weatherText"
+                        android:layout_marginLeft="160dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <CheckBox
+                        android:text="Fog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weatherFog"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/weatherClear"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <CheckBox
+                        android:text="Snow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weatherSnow"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/weatherRain"
+                        android:layout_marginLeft="160dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                <CheckBox
+                        android:text="Hail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weatherHail"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/weatherFog"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.design.widget.CoordinatorLayout>
