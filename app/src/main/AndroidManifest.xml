@@ -22,13 +22,15 @@
         <activity
                 android:name=".AddEntry"
                 android:label="Add"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+                android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
                 android:name=".Information"
                 android:label="Information"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+                android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+                android:name=".EditEntry"
+                android:label="Edit"
+                android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

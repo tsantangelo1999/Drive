@@ -2,10 +2,10 @@ package com.cyanprinterink.lists;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.icu.text.IDNA;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -17,16 +17,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 
-import java.io.*;
-
-public class AddEntry extends AppCompatActivity
+public class EditEntry extends AppCompatActivity
 {
 
     @Override public void onBackPressed()
     {
-        Intent back = new Intent(AddEntry.this, MainActivity.class);
+        Intent back = new Intent(EditEntry.this, Information.class);
         startActivity(back);
         finish();
     }
@@ -47,20 +49,27 @@ public class AddEntry extends AppCompatActivity
     @Override protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_edit_entry);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Add Entry");
+        getSupportActionBar().setTitle("Edit Entry");
         ConstraintLayout cL = (ConstraintLayout) findViewById(R.id.constraintLayout);
         ScrollView sV = (ScrollView) findViewById(R.id.scrollboi);
+
+        Entry info = null;
+        try
+        {
+            info = MainActivity.getEntries()[Information.line];
+        }
+        catch(IOException e)
+        {
+            Log.d("fileText", "oh");
+        }
 
         //date picker
         final Button date = (Button) findViewById(R.id.date);
         final Calendar cal = Calendar.getInstance();
-        final int cYear = cal.get(Calendar.YEAR);
-        final int cMonth = cal.get(Calendar.MONTH);
-        final int cDay = cal.get(Calendar.DAY_OF_MONTH);
-        date.setText((cMonth + 1) + "/" + cDay + "/" + cYear);
+        date.setText(info.month + "/" + info.day + "/" + info.year);
         dateStr = date.getText().toString();
         date.setOnClickListener(new View.OnClickListener()
         {
@@ -69,7 +78,7 @@ public class AddEntry extends AppCompatActivity
             {
                 String[] dates = date.getText().toString().split("/");
                 int[] dateNums = {Integer.parseInt(dates[0]), Integer.parseInt(dates[1]), Integer.parseInt(dates[2])};
-                DatePickerDialog dpg = new DatePickerDialog(AddEntry.this, new DatePickerDialog.OnDateSetListener()
+                DatePickerDialog dpg = new DatePickerDialog(EditEntry.this, new DatePickerDialog.OnDateSetListener()
                 {
                     @Override public void onDateSet(DatePicker view, int year,
                             int month, int dayOfMonth)
@@ -85,20 +94,29 @@ public class AddEntry extends AppCompatActivity
 
         //time driven stuff
         timeDrivenHr = (EditText) findViewById(R.id.timeDrivenHr);
+        timeDrivenHr.setText("" + info.hours);
         timeDrivenMin = (EditText) findViewById(R.id.timeDrivenMin);
+        timeDrivenMin.setText("" + info.minutes);
         timeDrivenHr.setFilters(new InputFilter[] {filter, new InputFilter.LengthFilter(2)});
         timeDrivenMin.setFilters(new InputFilter[] {filter, new InputFilter.LengthFilter(2)});
 
         //light stuff
         day = (CheckBox) findViewById(R.id.lightCondDay);
+        day.setChecked(info.lightBooleans[0].equalsIgnoreCase("true"));
         night = (CheckBox) findViewById(R.id.lightCondNight);
+        night.setChecked(info.lightBooleans[1].equalsIgnoreCase("true"));
 
         //weather stuff
         clear = (CheckBox) findViewById(R.id.weatherClear);
+        clear.setChecked(info.weatherBooleans[0].equalsIgnoreCase("true"));
         rain = (CheckBox) findViewById(R.id.weatherRain);
+        rain.setChecked(info.weatherBooleans[1].equalsIgnoreCase("true"));
         snow = (CheckBox) findViewById(R.id.weatherSnow);
+        snow.setChecked(info.weatherBooleans[2].equalsIgnoreCase("true"));
         hail = (CheckBox) findViewById(R.id.weatherHail);
+        hail.setChecked(info.weatherBooleans[3].equalsIgnoreCase("true"));
         fog = (CheckBox) findViewById(R.id.weatherFog);
+        fog.setChecked(info.weatherBooleans[4].equalsIgnoreCase("true"));
     }
 
     String dateStr;
@@ -114,40 +132,26 @@ public class AddEntry extends AppCompatActivity
 
     public void writeText(View view) throws IOException
     {
-        Log.d("fileText", "printing");
-        File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
-        FileWriter fw = new FileWriter(file, true);
-        PrintWriter pw = new PrintWriter(fw);
-        int timeVal = Integer.parseInt(timeDrivenHr.getText().toString()) * 60 + Integer.parseInt(timeDrivenMin.getText().toString());
-        pw.println(dateStr + "\t" + timeVal + "\t" + day.isChecked() + "," + night.isChecked() + "\t" + clear.isChecked() + "," + rain.isChecked() + "," + snow.isChecked() + "," + hail.isChecked() + "," + fog.isChecked() + "\t");
-        pw.close();
-        fw.close();
-        Intent refresh = new Intent(this, MainActivity.class);
-        startActivity(refresh);
-        finish();
-    }
-
-    public void delete(View view)
-    {
-        Log.d("fileText", "deleting");
-        File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
-        file.delete();
-    }
-
-    public static void deleteEntry(int line) throws IOException
-    {
-        Log.d("fileText", "deleting line " + line);
+        Log.d("fileText", "editing line " + Information.line);
         File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         for(int i = 0; i < MainActivity.entries.length; i++)
         {
-            if(!(i == line))
+            if(!(i == Information.line))
             {
                 pw.println(MainActivity.entries[i].docVal());
+            }
+            else
+            {
+                int timeVal = Integer.parseInt(timeDrivenHr.getText().toString()) * 60 + Integer.parseInt(timeDrivenMin.getText().toString());
+                pw.println(dateStr + "\t" + timeVal + "\t" + day.isChecked() + "," + night.isChecked() + "\t" + clear.isChecked() + "," + rain.isChecked() + "," + snow.isChecked() + "," + hail.isChecked() + "," + fog.isChecked() + "\t");
             }
         }
         pw.close();
         fw.close();
+        Intent refresh = new Intent(this, Information.class);
+        startActivity(refresh);
+        finish();
     }
 }

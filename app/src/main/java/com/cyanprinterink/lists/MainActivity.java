@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity
                         Log.d("fileText", "deleting");
                         File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
                         file.delete();
-                        finish();
                         recreate();
                     }
                 });

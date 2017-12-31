@@ -41,40 +41,41 @@ public class Information extends AppCompatActivity
         TextView timeV = (TextView) findViewById(R.id.TimeView);
         TextView lightV = (TextView) findViewById(R.id.LightView);
         TextView weatherV = (TextView) findViewById(R.id.WeatherView);
+        Entry info = null;
 
         try
         {
-            Entry info = MainActivity.getEntries()[line];
-            Log.d("fileText", info.docVal());
-            dateV.setText(info.date());
-            timeV.setText(info.hours + " hours, " + info.minutes + " minutes");
-            String light = "";
-            if(info.light % 2 >= 1)
-                light += "Day, ";
-            if(info.light % 4 >= 2)
-                light += "Night, ";
-            if(light.length() > 0)
-                light = light.substring(0, light.length() - 2);
-            lightV.setText(light);
-            String weather = "";
-            if(info.weather % 2 >= 1)
-                weather += "Clear, ";
-            if(info.weather % 4 >= 2)
-                weather += "Rain, ";
-            if(info.weather % 8 >= 4)
-                weather += "Snow, ";
-            if(info.weather % 16 >= 8)
-                weather += "Hail, ";
-            if(info.weather % 32 >= 16)
-                weather += "Fog, ";
-            if(weather.length() > 0)
-                weather = weather.substring(0, weather.length() - 2);
-            weatherV.setText(weather);
+            info = MainActivity.getEntries()[line];
         }
         catch(IOException e)
         {
-            Log.d("filetext", "oops");
+            Log.d("fileText", "oops");
         }
+        Log.d("fileText", info.docVal());
+        dateV.setText(info.date());
+        timeV.setText(info.hours + " hours, " + info.minutes + " minutes");
+        String light = "";
+        if(info.light % 2 >= 1)
+            light += "Day, ";
+        if(info.light % 4 >= 2)
+            light += "Night, ";
+        if(light.length() > 0)
+            light = light.substring(0, light.length() - 2);
+        lightV.setText(light);
+        String weather = "";
+        if(info.weather % 2 >= 1)
+            weather += "Clear, ";
+        if(info.weather % 4 >= 2)
+            weather += "Rain, ";
+        if(info.weather % 8 >= 4)
+            weather += "Snow, ";
+        if(info.weather % 16 >= 8)
+            weather += "Hail, ";
+        if(info.weather % 32 >= 16)
+            weather += "Fog, ";
+        if(weather.length() > 0)
+            weather = weather.substring(0, weather.length() - 2);
+        weatherV.setText(weather);
     }
 
     @Override
@@ -91,6 +92,9 @@ public class Information extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_edit:
                 Log.d("fileText", "edit");
+                Intent intent = new Intent(Information.this, EditEntry.class);
+                startActivity(intent);
+                finish();
                 return true;
 
             case R.id.action_delete:
