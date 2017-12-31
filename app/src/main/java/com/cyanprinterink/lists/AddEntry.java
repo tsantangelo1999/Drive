@@ -12,6 +12,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -60,6 +61,7 @@ public class AddEntry extends AppCompatActivity
         final int cMonth = cal.get(Calendar.MONTH);
         final int cDay = cal.get(Calendar.DAY_OF_MONTH);
         date.setText((cMonth + 1) + "/" + cDay + "/" + cYear);
+        dateStr = date.getText().toString();
         date.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -73,6 +75,7 @@ public class AddEntry extends AppCompatActivity
                             int month, int dayOfMonth)
                     {
                         date.setText((month + 1) + "/" + dayOfMonth + "/" + year);
+                        dateStr = date.getText().toString();
 
                     }
                 }, dateNums[2], dateNums[0] - 1, dateNums[1]);
@@ -81,11 +84,29 @@ public class AddEntry extends AppCompatActivity
         });
 
         //time driven stuff
-        EditText timeDrivenHr = (EditText) findViewById(R.id.timeDrivenHr);
-        EditText timeDrivenMin = (EditText) findViewById(R.id.timeDrivenMin);
+        timeDrivenHr = (EditText) findViewById(R.id.timeDrivenHr);
+        timeDrivenMin = (EditText) findViewById(R.id.timeDrivenMin);
         timeDrivenHr.setFilters(new InputFilter[] {filter, new InputFilter.LengthFilter(2)});
         timeDrivenMin.setFilters(new InputFilter[] {filter, new InputFilter.LengthFilter(2)});
+        day = (CheckBox) findViewById(R.id.lightCondDay);
+        night = (CheckBox) findViewById(R.id.lightCondNight);
+        clear = (CheckBox) findViewById(R.id.weatherClear);
+        rain = (CheckBox) findViewById(R.id.weatherRain);
+        snow = (CheckBox) findViewById(R.id.weatherSnow);
+        hail = (CheckBox) findViewById(R.id.weatherHail);
+        fog = (CheckBox) findViewById(R.id.weatherFog);
     }
+
+    String dateStr;
+    EditText timeDrivenHr;
+    EditText timeDrivenMin;
+    CheckBox day;
+    CheckBox night;
+    CheckBox clear;
+    CheckBox rain;
+    CheckBox snow;
+    CheckBox hail;
+    CheckBox fog;
 
     public void writeText(View view) throws IOException
     {
@@ -93,7 +114,8 @@ public class AddEntry extends AppCompatActivity
         File file = new File(MainActivity.context.getFilesDir(), "info.tsv");
         FileWriter fw = new FileWriter(file, true);
         PrintWriter pw = new PrintWriter(fw);
-        pw.println((int)(Math.random()*100));
+        int timeVal = Integer.parseInt(timeDrivenHr.getText().toString()) * 60 + Integer.parseInt(timeDrivenMin.getText().toString());
+        pw.println(dateStr + "\t" + timeVal + "\t" + day.isChecked() + "," + night.isChecked() + "\t" + clear.isChecked() + "," + rain.isChecked() + "," + snow.isChecked() + "," + hail.isChecked() + "," + fog.isChecked() + "\t");
         pw.close();
         fw.close();
         Intent refresh = new Intent(this, MainActivity.class);
@@ -118,7 +140,7 @@ public class AddEntry extends AppCompatActivity
         {
             if(!(i == line))
             {
-                pw.println(MainActivity.entries[i].number);
+                pw.println(MainActivity.entries[i].docVal());
             }
         }
         pw.close();

@@ -135,9 +135,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private Entry[] getEntries() throws IOException
+    public static Entry[] getEntries() throws IOException
     {
-        File file = new File(this.getFilesDir(), "info.tsv");
+        File file = new File(context.getFilesDir(), "info.tsv");
         Entry[] ret = null;
         if(!file.createNewFile())
         {
@@ -150,8 +150,11 @@ public class MainActivity extends AppCompatActivity
             ret = new Entry[lnr.getLineNumber()];
             for(int i = 0; i < ret.length; i++)
             {
-                int number = sc.nextInt();
-                ret[i] = new Entry(number);
+                String[] date = sc.next().split("/");
+                int time = Integer.parseInt(sc.next());
+                String[] light = sc.next().split(",");
+                String[] weather = sc.next().split(",");
+                ret[i] = new Entry(date, time, light, weather);
             }
             sc.close();
             lnr.close();
@@ -167,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         PrintWriter pw = new PrintWriter(fw);
         for(Entry e : entries)
         {
-            pw.println(e.number);
+            pw.println(e.docVal());
         }
         pw.close();
         fw.close();
